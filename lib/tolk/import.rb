@@ -31,7 +31,9 @@ module Tolk
           phrase = phrases.detect {|p| p.key == key}
 
           if phrase
-            translation = locale.translations.new(:text => value, :phrase => phrase)
+            translation = locale.translations.find_or_initialize_by_phrase_id phrase.id
+            translation.text = value
+
             if translation.save
               count = count + 1
             elsif translation.errors[:variables].present?
